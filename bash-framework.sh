@@ -141,4 +141,32 @@ LogfileLocation() {
     echo_OK
 }
 
+read_secretly() {
+    unset secret
+    secret=
+    unset charcount
+    charcount=0
+    prompt="${1}"
+    while IFS= read -p "${prompt}" -r -s -n 1 char
+    do
+        if [[ $char == $'\0' ]]; then
+            break
+        fi
+        if [[ $char == $'\177' ]] ; then
+            if [ $charcount -gt 0 ] ; then
+                charcount=$((charcount-1))
+                prompt=$'\b \b'
+                secret="${secret%?}"
+            else
+                prompt=''
+            fi
+        else
+            charcount=$((charcount+1))
+            prompt='*'
+            secret+="${char}"
+        fi
+    done
+    echo "${secret}"
+}
+
 # +----- EOF ------------------------------------------------------------------+

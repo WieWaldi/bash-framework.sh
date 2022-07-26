@@ -7,14 +7,16 @@
 # |                  waldemar.schroeer(at)rz-amper.de                          |
 # +----------------------------------------------------------------------------+
 
+# +----- Include bash-framework.sh --------------------------------------------+
 export LANG="en_US.UTF-8"
-export datetime="$(date "+%Y-%m-%d-%H-%M-%S")"
-export logfile="/tmp/suckless.X11_prepare_${datetime}.log"
-export framework_width=80
-export BASE_DIR="$(dirname "$(readlink -f "$0")")"
-export notice=notice.txt
+export base_dir="$(dirname "$(readlink -f "$0")")"
 export cdir=$(pwd)
-source "$BASE_DIR/bash-framework.sh"
+export datetime="$(date "+%Y-%m-%d-%H-%M-%S")"
+export logfile="${cdir}/${datetime}.log"
+export framework_width=80
+export notice=notice.txt
+export bash_framework="${HOME}/.local/bin/bash-framework.sh"
+source ${bash_framework}
 
 # +----- Variables ------------------------------------------------------------+
 
@@ -22,7 +24,7 @@ source "$BASE_DIR/bash-framework.sh"
 
 # +----- Main -----------------------------------------------------------------+
 
-display_Notice ${notice}
+display_Notice ${cdir}/${notice}
 if [[ "${proceed}" = "no" ]]; then
     exit 1
 fi

@@ -11,7 +11,10 @@
 bash-framework.sh aims to provides a simple framework for using,
 developing and maintaining shell scripts and custom commands.
 
- ## Version
+## Links/URLs/Credits
+[Software Export of Anthony Thyssen](https://antofthy.gitlab.io/software/#ask_password_stars) - Usefull shell scripts and routines
+
+## Version
 The option to create releases on GitHub is pretty nice. I really do like it
 since it give me easy access to all the files without git cloning the complete
 repository.  
