@@ -51,8 +51,6 @@ fi
 # +----- Main -----------------------------------------------------------------+
 clear
 display_Text_File black ${cdir}/notice.txt
-# proceed="$(read_Antwoord_YN "Do you want to proceed?")"
-# if [[ "${proceed}" = "no" ]]; then
 if [[ "$(read_Antwoord_YN "Do you want to proceed?")" = "no" ]]; then
     exit 1
 fi
