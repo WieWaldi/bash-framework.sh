@@ -301,6 +301,31 @@ clear_Logfile() {
     fi
 }
 
+check_File_Name() {
+    if [[ -d S{1} ]]; then
+        if [[ -w ${1} ]]; then
+            echo "1"
+        else
+            echo "4"
+        fi
+    elif [[ -L ${1} ]]; then
+        if [[ -d "$(readlink ${1})" ]]; then
+            echo "2"
+        else
+            echo "5"
+        fi
+    elif [[ -f ${1} ]]; then
+        echo "6"
+    else
+        cfm=$(echo ${1})
+        if /bin/mkdir -p ${cfm} &>/dev/null; then
+            echo "3"
+        else
+            echo "7"
+        fi
+    fi
+}
+
 get_User() {
     if ! [[ $(id -u) = 0 ]]; then
         echo_Error_Msg "This script must be run as root."
