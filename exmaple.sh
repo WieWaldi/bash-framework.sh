@@ -18,6 +18,8 @@
 # +----------------------------------------------------------------------------+
 
 # +----- Include bash-framework.sh --------------------------------------------+
+# set -o errexit
+# set -o pipefail
 export BASH_FRMWRK_MINVER=3
 export LANG="en_US.UTF-8"
 export base_dir="$(dirname "$(readlink -f "$0")")"
@@ -50,47 +52,50 @@ fi
 
 # +----- Functions ------------------------------------------------------------+
 
+# +----- Option Handling ------------------------------------------------------+
+
+
 # +----- Main -----------------------------------------------------------------+
 # clear
-display_Text_File black ${cdir}/notice.txt
-if [[ "$(read_Antwoord_YN "Do you want to proceed?")" = "no" ]]; then
+__display_Text_File black ${cdir}/notice.txt
+if [[ "$(__read_Antwoord_YN "Do you want to proceed?")" = "no" ]]; then
     exit 1
 fi
 
-echo_Title "Example Start"
-echo_Left "Let me start up."
-echo_OK
-echo_Left "Some Text on the left hand side."
-echo_Done
-echo_Left "A bit more Text on the left hand side."
-echo_Skipped
-echo_Left "Some more Text."
-echo_Failed
+__echo_Title "Example Start"
+__echo_Left "Let me start up."
+__echo_OK
+__echo_Left "Some Text on the left hand side."
+__echo_Done
+__echo_Left "A bit more Text on the left hand side."
+__echo_Skipped
+__echo_Left "Some more Text."
+__echo_Failed
 
-GoAhead="$(read_Antwoord_YN "Shall we conitnue?")"
-echo_Left "We shall continue..."
+GoAhead="$(__read_Antwoord_YN "Shall we conitnue?")"
+__echo_Left "We shall continue..."
 if [[ "${GoAhead}" = "yes" ]]; then
     # Do some work
-    echo_Done
+    __echo_Done
 else
-    echo_Skipped
+    __echo_Skipped
 fi
 
-GoAhead="$(read_Antwoord_YN "Check File Name?")"
+GoAhead="$(__read_Antwoord_YN "Check File Name?")"
 if [[ "${GoAhead}" = "yes" ]]; then
     read -p "File Name: " filename
-    filenamecode=$(check_File_Name ${filename})
-    echo_Left "Result is ${filenamecode}"
-    echo_Done
+    filenamecode=$(__check_File_Name $(echo ${filename}))
+    __echo_Left "Result is ${filenamecode}"
+    __echo_Done
 
 else
-    echo_Left "Check File Name..."
-    echo_Skipped
+    __echo_Left "Check File Name..."
+    __echo_Skipped
 fi
 
 
 
-echo_Title "Example End"
+__echo_Title "Example End"
 
 # +----- End ------------------------------------------------------------------+
 echo -e "\n\n"

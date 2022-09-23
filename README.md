@@ -12,7 +12,9 @@ bash-framework.sh aims to provides a simple framework for using,
 developing and maintaining shell scripts and custom commands.
 
 ## Links/URLs/Credits
-[Software Export of Anthony Thyssen](https://antofthy.gitlab.io/software/#ask_password_stars) - Usefull shell scripts and routines
+[Software Export of Anthony Thyssen](https://antofthy.gitlab.io/software/#ask_password_stars) - Usefull shell scripts and routines  
+[StackOverflow](https://stackoverflow.com/questions/3963716/how-to-manually-expand-a-special-variable-ex-tilde-in-bash) - How to manually expand a special variable (ex: ~ tilde) in bash  
+[StackOverflow](https://stackoverflow.com/questions/15858766/tilde-expansion-in-quotes/15859646#15859646) - Tilde expansion in quotes  
 
 ## Version
 The option to create releases on GitHub is pretty nice. I really do like it

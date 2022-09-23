@@ -50,7 +50,39 @@ NORMAL=$(tput sgr0)
 YN="(Yes|${BRIGHT}No${NORMAL}) >> "
 
 # +----- Functions ------------------------------------------------------------+
-echo_Equals() {
+__exit_Error() {                      # Just output an error condition and exit
+    local exitcode=2
+    local errormsg="Error Message"
+    if [[ -n ${1} ]]; then
+        exitcode=${1}
+    fi
+    if [[ -n ${2} ]]; then
+        errormsg=${2}
+    fi
+    echo >&2 "${progname}:" "${errormsg}"
+    exit "${exitcode}"
+}
+
+__exit_Usage() {                      # Output an error and print synopsis line
+    local exitcode=10
+    local errormsg="Error Message"
+    if [[ -n ${1} ]]; then
+        exitcode=${1}
+    fi
+    if [[ -n ${2} ]]; then
+        errormsg=${2}
+    fi
+    echo >&2 "${progname}:" "${errormsg}"
+    exit "${exitcode}"
+}
+
+__exit_Help() {                       # Output full header comments
+    local exitcode=10
+    local errormsg="Error Message"
+    exit "${exitcode}"
+}
+
+__echo_Equals() {
     counter=0
     while [  $counter -lt "$1" ]; do
     printf '='
@@ -58,25 +90,25 @@ echo_Equals() {
     done
 }
 
-echo_Title() {
+__echo_Title() {
     title=$1
     ncols=$(tput cols)
     nequals=$(((framework_width-${#title})/2-1))
     tput setaf 4 0 0
-    echo_Equals "$nequals"
+    __echo_Equals "$nequals"
     tput setaf 6 0 0
     printf " %s " "$title"
     tput setaf 4 0 0
-    echo_Equals "$nequals"
+    __echo_Equals "$nequals"
     tput sgr0
     echo
 }
 
-echo_Left() {
+__echo_Left() {
     text=${1}
     echo -n -e "${1}\r"
 }
-echo_Right() {
+__echo_Right() {
     text=${1}
     echo
     tput cuu1
@@ -85,37 +117,37 @@ echo_Right() {
     echo "${text}"
 }
 
-echo_OK() {
+__echo_OK() {
     tput setaf 2 0 0
-    echo_Right "[ OK ]"
+    __echo_Right "[ OK ]"
     tput sgr0
 }
 
-echo_Done() {
+__echo_Done() {
     tput setaf 2 0 0
-    echo_Right "[ Done ]"
+    __echo_Right "[ Done ]"
     tput sgr0
 }
 
-echo_NotNeeded() {
+__echo_NotNeeded() {
     tput setaf 3 0 0
-    echo_Right "[ Not Needed ]"
+    __echo_Right "[ Not Needed ]"
     tput sgr0
 }
 
-echo_Skipped() {
+__echo_Skipped() {
     tput setaf 3 0 0
-    echo_Right "[ Skipped ]"
+    __echo_Right "[ Skipped ]"
     tput sgr0
 }
 
-echo_Failed() {
+__echo_Failed() {
     tput setaf 1 0 0
-    echo_Right "[ Failed ]"
+    __echo_Right "[ Failed ]"
     tput sgr0
 }
 
-echo_Error_Msg() {
+__echo_Error_Msg() {
     echo -n -e "\n${RED} [ Error ]${NORMAL} ${1}\n\n"
 }
 
@@ -130,7 +162,7 @@ echo_Error_Msg() {
 #            Requires Option 3 set not zero
 #  6         Multine Text
 
-echo_Box() {
+__echo_Box() {
     box_style="${1}"
     box_indent="${2}"
     box_width=${3}
@@ -220,7 +252,7 @@ echo_Box() {
     printf "%*s%s%s%s\n" $box_indent '' "$cbl" "${line//?/$eb}" "$cbr"
 }
 
-read_Antwoord_YN() {
+__read_Antwoord_YN() {
     read -p "${1} ${YN}" antwoord
         if [[ ${antwoord} == [yY] || ${antwoord} == [yY][Ee][Ss] ]]; then
             echo "yes"
@@ -229,7 +261,7 @@ read_Antwoord_YN() {
         fi
 }
 
-read_Antwoord_Secretly() {
+__read_Antwoord_Secretly() {
     unset secret
     secret=
     unset charcount
@@ -257,7 +289,7 @@ read_Antwoord_Secretly() {
     echo "${secret}"
 }
 
-display_Text_File() {
+__display_Text_File() {
     case ${1} in
         Black|black)
             tput setaf 0 0 0
@@ -288,20 +320,20 @@ display_Text_File() {
     tput sgr0
 }
 
-display_Notice() {
+__display_Notice() {
     tput setaf 6
     cat ${BASE_DIR}/$1
     tput sgr0
     proceed="$(read_Antwoord "Do you want to proceed? ${YN}")"
 }
 
-clear_Logfile() {
+__clear_Logfile() {
     if [[ -f ${logfile} ]]; then
         rm ${logfile}
     fi
 }
 
-check_File_Name() {
+__check_File_Name() {
     if [[ -d S{1} ]]; then
         if [[ -w ${1} ]]; then
             echo "1"
@@ -317,8 +349,7 @@ check_File_Name() {
     elif [[ -f ${1} ]]; then
         echo "6"
     else
-        cfm=$(echo ${1})
-        if /bin/mkdir -p ${cfm} &>/dev/null; then
+        if /bin/mkdir -p ${1} &>/dev/null; then
             echo "3"
         else
             echo "7"
@@ -326,20 +357,20 @@ check_File_Name() {
     fi
 }
 
-get_User() {
+__get_User() {
     if ! [[ $(id -u) = 0 ]]; then
         echo_Error_Msg "This script must be run as root."
         exit 1
     fi
 }
 
-get_OperatingSystem() {
+__get_OperatingSystem() {
     os=$(uname -s)
     kernel=$(uname -r)
     architecture=$(uname -m)
 }
 
-get_Distribution() {
+__get_Distribution() {
     if [[ -f /etc/os-release ]]; then
         . /etc/os-release
         distribution=$NAME
