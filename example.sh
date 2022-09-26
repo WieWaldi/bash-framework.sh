@@ -46,11 +46,11 @@ export cdir=$(pwd)
 export scriptname="${BASH_SOURCE##*/}"
 export scriptdir="${BASH_SOURCE%/*}"
 export datetime="$(date "+%Y-%m-%d-%H-%M-%S")"
-export logfile="${cdir}/${datetime}.log"
+export logfile="${scriptdir}/${datetime}.log"
 export framework_width=80
 
-if [[ -f "${cdir}"/bash-framework.sh ]]; then
-    BASH_FRMWRK_FILE="${cdir}/bash-framework.sh"
+if [[ -f "${scriptdir}"/bash-framework.sh ]]; then
+    BASH_FRMWRK_FILE="${scriptdir}/bash-framework.sh"
 else
     test_file=$(which bash-framework.sh 2>/dev/null)
     if [[ $? = 0 ]]; then
@@ -72,13 +72,31 @@ fi
 # +----- Variables ------------------------------------------------------------+
 
 # +----- Functions ------------------------------------------------------------+
+output_Variable() {
+    __echo_Title "VAR"
+    __echo_Left "cdir:"
+    __echo_Right "${cdir}"
+    __echo_Left "base_dir:"
+    __echo_Right "${base_dir}"
+    __echo_Left "scriptname:"
+    __echo_Right "${scriptname}"
+    __echo_Left "scriptdir:"
+    __echo_Right "${scriptdir}"
+    __echo_Left "BASH_SOURCE:"
+    __echo_Right "${BASH_SOURCE}"
+    __echo_Left "demo:"
+    __echo_Right "${demo}"
+    __echo_Left "framework_width:"
+    __echo_Right "${framework_width}"
+    __echo_Left "option:"
+    __echo_Right "${option}"
+}
 
 # +----- Option Handling ------------------------------------------------------+
 while [[ $# -gt 0 ]]; do
     case "$1" in
         -\?|-h|-help|--help) __exit_Help ;;                    # Standard help option
         -doc|--doc)          __exit_Help ;;
-
         -d|--demo)
             demo="True"
             ;;
@@ -96,7 +114,6 @@ while [[ $# -gt 0 ]]; do
             option="${2}"
             shift
             ;;
-
         --) shift; break ;;                                 # Force end of user option
         -*) __exit_Usage 10 "Unknown option \"${1}\"" ;;    # Unknown command line option
         *)  break ;;                                        # Unforced end of user options
@@ -110,17 +127,7 @@ if [[ "${demo}" != "True" ]]; then
     __exit_Usage 10 "Not in demo mode"
 fi
 
-__display_Text_File black ${cdir}/notice.txt
-
-__echo_Title "VAR"
-echo "cdir          ${cdir}"
-echo "base_dir      ${base_dir}"
-echo "scriptname    ${scriptname}"
-echo "scriptdir     ${scriptdir}"
-echo "bash_source   ${BASH_SOURCE}"
-echo "demo          ${demo}"
-echo "width         ${framework_width}"
-echo "option        ${option}"
+__display_Text_File blue ${scriptdir}/notice.txt
 
 if [[ "$(__read_Antwoord_YN "Do you want to proceed?")" = "no" ]]; then
     __exit_Error 10 "You don't want to proceed!"
@@ -157,10 +164,7 @@ else
     __echo_Skipped
 fi
 
-
-
 __echo_Title "Example End"
-
 # +----- End ------------------------------------------------------------------+
 echo -e "\n\n"
 exit 0
