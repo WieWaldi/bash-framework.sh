@@ -8,6 +8,8 @@
 <br />
 
 ![screenshot_vim.png](https://raw.githubusercontent.com/WieWaldi/bash-framework.sh/master/img/screenshot.png)
+
+## Motivation
 bash-framework.sh aims to provides a simple framework for using,
 developing and maintaining shell scripts and custom commands.
 
