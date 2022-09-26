@@ -17,6 +17,25 @@
 # |                  waldemar.schroeer(at)rz-amper.de                          |
 # +----------------------------------------------------------------------------+
 
+
+
+
+
+
+# +----- Help and Usage (Must start at line 25 and must stop with "######" ----+
+#
+# example.sh [options]
+#
+# This is an example on how to use functions from bash-framework.sh
+#
+# Options...
+#  -d, --demo           Run the demo, otherwise exit with an error message
+#  -h, --help           Print out help
+#  -w, --width          Width to use
+#  -o, --option         Just an option
+#
+#####
+
 # +----- Include bash-framework.sh --------------------------------------------+
 # set -o errexit
 # set -o pipefail
@@ -24,24 +43,26 @@ export BASH_FRMWRK_MINVER=3
 export LANG="en_US.UTF-8"
 export base_dir="$(dirname "$(readlink -f "$0")")"
 export cdir=$(pwd)
+export scriptname="${BASH_SOURCE##*/}"
+export scriptdir="${BASH_SOURCE%/*}"
 export datetime="$(date "+%Y-%m-%d-%H-%M-%S")"
 export logfile="${cdir}/${datetime}.log"
 export framework_width=80
 
-test_file=$(which bash-framework.sh 2>/dev/null)
-if [[ $? = 0 ]]; then
-    BASH_FRMWK_FILE="${test_file}"
-    unset test_file
+if [[ -f "${cdir}"/bash-framework.sh ]]; then
+    BASH_FRMWRK_FILE="${cdir}/bash-framework.sh"
 else
-    if [[ -f "${cdir}"/bash-framework.sh ]]; then
-        BASH_FRMWK_FILE="${cdir}/bash-framework.sh"
+    test_file=$(which bash-framework.sh 2>/dev/null)
+    if [[ $? = 0 ]]; then
+        BASH_FRMWRK_FILE="${test_file}"
+        unset test_file
     else
-        echo -e "\nNo Bash Framework found. Now I'm sad.-(\n"
+        echo -e "\nNo Bash Framework found.\n"
         exit 1
     fi
 fi
 
-source "${BASH_FRMWK_FILE}"
+source "${BASH_FRMWRK_FILE}"
 if [[ "${BASH_FRMWRK_VER}" -lt "${BASH_FRMWRK_MINVER}" ]]; then
     echo -e "\nI've found version ${BASH_FRMWRK_VER} of bash_framework.sh, but I'm in need of version ${BASH_FRMWRK_MINVER}."
     echo -e "You may get the newest version from https://github.com/WieWaldi/bash-framework.sh\n"
@@ -53,13 +74,56 @@ fi
 # +----- Functions ------------------------------------------------------------+
 
 # +----- Option Handling ------------------------------------------------------+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -\?|-h|-help|--help) __exit_Help ;;                    # Standard help option
+        -doc|--doc)          __exit_Help ;;
 
+        -d|--demo)
+            demo="True"
+            ;;
+        -w|--width)
+            if [[ ${2} != *[^0-9]* ]]; then
+                __exit_Usage 10 "Width must be an integer"
+            fi
+            framework_width="${2}"
+            shift
+            ;;
+        -o|--option)
+            if [[ ${2} = *[^0-9]* ]]; then
+                __exit_Usage 10 "Option must be an integer"
+            fi
+            option="${2}"
+            shift
+            ;;
+
+        --) shift; break ;;                                 # Force end of user option
+        -*) __exit_Usage 10 "Unknown option \"${1}\"" ;;    # Unknown command line option
+        *)  break ;;                                        # Unforced end of user options
+    esac
+    shift                                                   # Shift to next option
+done
 
 # +----- Main -----------------------------------------------------------------+
 # clear
+if [[ "${demo}" != "True" ]]; then
+    __exit_Usage 10 "Not in demo mode"
+fi
+
 __display_Text_File black ${cdir}/notice.txt
+
+__echo_Title "VAR"
+echo "cdir          ${cdir}"
+echo "base_dir      ${base_dir}"
+echo "scriptname    ${scriptname}"
+echo "scriptdir     ${scriptdir}"
+echo "bash_source   ${BASH_SOURCE}"
+echo "demo          ${demo}"
+echo "width         ${framework_width}"
+echo "option        ${option}"
+
 if [[ "$(__read_Antwoord_YN "Do you want to proceed?")" = "no" ]]; then
-    exit 1
+    __exit_Error 10 "You don't want to proceed!"
 fi
 
 __echo_Title "Example Start"

@@ -52,33 +52,49 @@ YN="(Yes|${BRIGHT}No${NORMAL}) >> "
 # +----- Functions ------------------------------------------------------------+
 __exit_Error() {                      # Just output an error condition and exit
     local exitcode=2
-    local errormsg="Error Message"
+    local errormsg="Unknown Error"
+    local re='^[0-9]+$'
     if [[ -n ${1} ]]; then
-        exitcode=${1}
+        if [[ ${1} =~ ${re} ]]; then
+            exitcode=${1}
+            if [[ -n ${2} ]]; then
+                errormsg=${2}
+            fi
+        else
+            if ! [[ ${1} =~ ${re} ]]; then
+                errormsg=${1}
+            fi
+        fi
     fi
-    if [[ -n ${2} ]]; then
-        errormsg=${2}
-    fi
-    echo >&2 "${progname}:" "${errormsg}"
+    echo >&2 "${scriptname}:" "${errormsg}"
     exit "${exitcode}"
 }
 
 __exit_Usage() {                      # Output an error and print synopsis line
-    local exitcode=10
-    local errormsg="Error Message"
+    local exitcode=2
+    local errormsg="Unknown Error"
+    local re='^[0-9]+$'
     if [[ -n ${1} ]]; then
-        exitcode=${1}
+        if [[ ${1} =~ ${re} ]]; then
+            exitcode=${1}
+            if [[ -n ${2} ]]; then
+                errormsg=${2}
+            fi
+        else
+            if ! [[ ${1} =~ ${re} ]]; then
+                errormsg=${1}
+            fi
+        fi
     fi
-    if [[ -n ${2} ]]; then
-        errormsg=${2}
-    fi
-    echo >&2 "${progname}:" "${errormsg}"
+    echo -e >&2 "\n${scriptname}:" "${errormsg}"
+    sed >&2 -n '1,26d; /^###/q; /^#/!q; /^#$/q; s/^#  */Usage: /p;' ${cdir}/${scriptname}
+    echo -e >&2 "For help use ${scriptname} --help"
     exit "${exitcode}"
 }
 
 __exit_Help() {                       # Output full header comments
     local exitcode=10
-    local errormsg="Error Message"
+    sed >&2 -n '1,25d; /^###/q; /^#/!q; s/^#*//; s/^ //; p' ${cdir}/${scriptname}
     exit "${exitcode}"
 }
 
