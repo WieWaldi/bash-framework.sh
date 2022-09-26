@@ -7,6 +7,4 @@
 |   bash-framework.sh aims to provides a simple framework for using,           |
 |   developing and maintaining shell scripts and custom commands.              |
 |                                                                              |
-|    Copyright © 2020 Waldemar Schroeer                                        |
-|                     waldemar.schroeer(at)rz-amper.de                         |
 +------------------------------------------------------------------------------+
