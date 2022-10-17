@@ -18,6 +18,7 @@ developing and maintaining shell scripts and custom commands.
 [StackOverflow](https://stackoverflow.com/questions/3963716/how-to-manually-expand-a-special-variable-ex-tilde-in-bash) - How to manually expand a special variable (ex: ~ tilde) in bash  
 [StackOverflow](https://stackoverflow.com/questions/15858766/tilde-expansion-in-quotes/15859646#15859646) - Tilde expansion in quotes  
 [tutorialspoint.com](https://www.tutorialspoint.com/unix/unix-regular-expressions.htm) - Regular Expressions with SED  
+[gitlab.com](https://gitlab.com/bertrand-benoit/scripts-common#environment-variables) - Common utilities for all GNU/Bash scripts (Kind of framework)  
 
 ## Version
 The option to create releases on GitHub is pretty nice. I really do like it
