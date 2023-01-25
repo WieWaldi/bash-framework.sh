@@ -110,11 +110,11 @@ __echo_Title() {
     title=$1
     ncols=$(tput cols)
     nequals=$(((framework_width-${#title})/2-1))
-    tput setaf 4 0 0
+    tput setaf 4
     __echo_Equals "$nequals"
-    tput setaf 6 0 0
+    tput setaf 6
     printf " %s " "$title"
-    tput setaf 4 0 0
+    tput setaf 4
     __echo_Equals "$nequals"
     tput sgr0
     echo
@@ -134,31 +134,31 @@ __echo_Right() {
 }
 
 __echo_OK() {
-    tput setaf 2 0 0
+    tput setaf 2
     __echo_Right "[ OK ]"
     tput sgr0
 }
 
 __echo_Done() {
-    tput setaf 2 0 0
+    tput setaf 2
     __echo_Right "[ Done ]"
     tput sgr0
 }
 
 __echo_NotNeeded() {
-    tput setaf 3 0 0
+    tput setaf 3
     __echo_Right "[ Not Needed ]"
     tput sgr0
 }
 
 __echo_Skipped() {
-    tput setaf 3 0 0
+    tput setaf 3
     __echo_Right "[ Skipped ]"
     tput sgr0
 }
 
 __echo_Failed() {
-    tput setaf 1 0 0
+    tput setaf 1
     __echo_Right "[ Failed ]"
     tput sgr0
 }
@@ -308,28 +308,28 @@ __read_Antwoord_Secretly() {
 __display_Text_File() {
     case ${1} in
         Black|black)
-            tput setaf 0 0 0
+            tput setaf 0
             ;;
         Red|red)
-            tput setaf 1 0 0
+            tput setaf 1
             ;;
         Green|green)
-            tput setaf 2 0 0
+            tput setaf 2
             ;;
         Yellow|yellow)
-            tput setaf 3 0 0
+            tput setaf 3
             ;;
         Blue|blue)
-            tput setaf 4 0 0
+            tput setaf 4
             ;;
         Magenta|magenta)
-            tput setaf 5 0 0
+            tput setaf 5
             ;;
         Cyan|cyan)
-            tput setaf 6 0 0
+            tput setaf 6
             ;;
         White|white)
-            tput setaf 7 0 0
+            tput setaf 7
             ;;
     esac
     cat ${2}
