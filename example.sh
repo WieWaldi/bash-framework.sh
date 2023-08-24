@@ -156,6 +156,10 @@ else
     __echo_Skipped
 fi
 
+__echo_Left "Copy affe"
+cp affe /tmp >/dev/null 2>&1
+__echo_Result
+
 GoAhead="$(__read_Antwoord_YN "Check File Name?")"
 if [[ "${GoAhead}" = "yes" ]]; then
     read -p "File Name: " filename

@@ -163,6 +163,15 @@ __echo_Failed() {
     tput sgr0
 }
 
+__echo_Result() {
+    retVal=$?
+    if [[ "${retVal}" -ne 0 ]]; then
+        __echo_Failed
+    else
+        __echo_Done
+    fi
+}
+
 __echo_Error_Msg() {
     echo -n -e "\n${RED} [ Error ]${NORMAL} ${1}\n\n"
 }
