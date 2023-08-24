@@ -39,7 +39,7 @@
 # +----- Include bash-framework.sh --------------------------------------------+
 # set -o errexit
 # set -o pipefail
-export BASH_FRMWRK_MINVER=3
+export BASH_FRMWRK_MINVER=4
 export LANG="en_US.UTF-8"
 export base_dir="$(dirname "$(readlink -f "$0")")"
 export cdir=$(pwd)
@@ -132,6 +132,10 @@ __display_Text_File blue ${scriptdir}/notice.txt
 if [[ "$(__read_Antwoord_YN "Do you want to proceed?")" = "no" ]]; then
     __exit_Error 10 "You don't want to proceed!"
 fi
+
+ThisExample1="$(__read_Line "Read Example")"
+__echo_Left "This Example:"
+__echo_Right "${ThisExample1}"
 
 __echo_Title "Example Start"
 __echo_Left "Let me start up."

@@ -17,17 +17,17 @@
 # |                  waldemar.schroeer(at)rz-amper.de                          |
 # |                                                                            |
 # +----- List of Functions ----------------------------------------------------+
-# | echo_Equals     read_Antwoord_YN        get_User                           |
-# | echo_Left       read_Antwoord_Secretly  get_OperatingSystem                |
-# | echo_Right      display_Text_File       get_Distribution                   |
-# | echo_Title                                                                 |
-# | echo_OK                                                                    |
-# | echo_Done                                                                  |
-# | echo_NotNeeded                                                             |
-# | echo_Skipped                                                               |
-# | echo_Failed                                                                |
-# | echo_Error_Msg                                                             |
-# | echo_Box                                                                   |
+# | __echo_Equals     __read_Antwoord_YN        __get_User                     |
+# | __echo_Left       __read_Antwoord_Secretly  __get_OperatingSystem          |
+# | __echo_Right      __read_Line               __get_Distribution             |
+# | __echo_Title      __display_Text_File                                      |
+# | __echo_OK                                                                  |
+# | __echo_Done                                                                |
+# | __echo_NotNeeded                                                           |
+# | __echo_Skipped                                                             |
+# | __echo_Failed                                                              |
+# | __echo_Error_Msg                                                           |
+# | __echo_Box                                                                 |
 # |                                                                            |
 # +----- Colors ---------------------------------------------------------------+
 # | Color         #define             Value       RGB                          |
@@ -43,7 +43,7 @@
 # +----------------------------------------------------------------------------+
 
 # +----- Variables ------------------------------------------------------------+
-BASH_FRMWRK_VER=3
+BASH_FRMWRK_VER=4
 RED=$(tput setaf 1)
 BRIGHT=$(tput bold)
 NORMAL=$(tput sgr0)
@@ -305,6 +305,10 @@ __read_Antwoord_Secretly() {
     echo "${secret}"
 }
 
+__read_Line() {
+    read -p "${1}: " read_Line
+    echo "${read_Line}"
+}
 __display_Text_File() {
     case ${1} in
         Black|black)
